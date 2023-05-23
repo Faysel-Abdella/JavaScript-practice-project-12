@@ -12,6 +12,17 @@ let randomWord; // To store one random word
 let score = 0; // Initially zero
 let time = 10; // Initially 10 sec
 
+let difficulty =
+  localStorage.getItem("difficulty") !== null
+    ? localStorage.getItem("difficulty")
+    : "medium";
+
+// Set difficulty select value
+difficultySelect.value =
+  localStorage.getItem("difficulty") !== null
+    ? localStorage.getItem("difficulty")
+    : "medium";
+
 // List of words for game
 const words = [
   "sigh",
@@ -88,6 +99,7 @@ addWordToDOM();
 
 // Event listener
 
+// Typing
 text.addEventListener("input", (e) => {
   const insertdText = e.target.value;
 
@@ -99,9 +111,26 @@ text.addEventListener("input", (e) => {
       // Cleare the input
       e.target.value = "";
 
-      time += 5;
+      if (difficulty === "hard") {
+        time += 2;
+      } else if (difficulty === "medium") {
+        time += 3;
+      } else {
+        time += 5;
+      }
 
       updteTime();
     }, 300);
   }
+});
+
+// Setting btn click
+settingsBtn.addEventListener("click", () => {
+  settings.classList.toggle("hide");
+});
+
+// Settings select
+settingsForm.addEventListener("change", (e) => {
+  difficulty = e.target.value;
+  localStorage.setItem("difficulty", difficulty);
 });
