@@ -36,6 +36,12 @@ const words = [
   "loving",
 ];
 
+// Focus on text when start
+text.focus();
+
+// Start counting down
+const timeInterval = setInterval(updteTime, 1000);
+
 // Generate random word from array
 function getRandomWord() {
   return words[Math.floor(Math.random() * words.length)];
@@ -52,6 +58,32 @@ function updateScore() {
   scoreEl.innerHTML = score;
 }
 
+// Update time
+function updteTime() {
+  time--;
+  timeEl.innerHTML = time + "s";
+
+  if (time === 0) {
+    clearInterval(timeInterval);
+
+    // end game
+    gameOver();
+  }
+}
+
+// Game over show in scree
+
+function gameOver() {
+  endgameEl.innerHTML = `
+    <h1>Time ran out</h1>
+    <p>Your final score is ${score}</p>
+    <button onclick='location.reload()'>Reload</button>
+
+    `;
+
+  endgameEl.style.display = "flex";
+}
+
 addWordToDOM();
 
 // Event listener
@@ -66,6 +98,10 @@ text.addEventListener("input", (e) => {
 
       // Cleare the input
       e.target.value = "";
+
+      time += 5;
+
+      updteTime();
     }, 300);
   }
 });
